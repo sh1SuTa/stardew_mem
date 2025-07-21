@@ -5,7 +5,7 @@
 #include <wtypes.h>
 #include"baseAddress/gameAddress.h"
 #include"mem.h"
-
+HANDLE hConsole;
 void RandomTitle()
 {
 	constexpr int length = 25;
@@ -19,7 +19,7 @@ void RandomTitle()
 }
 
 void initGame() {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	srand((unsigned)time(NULL));
 	RandomTitle();
 	//获取窗口句柄
@@ -54,21 +54,26 @@ int main()
 	int64_t 金币值 = 0;
 	std::cout << "金币值的地址：0x" << std::hex << reinterpret_cast<uintptr_t>(&金币值) << std::endl;
 	mem::Read(address::g_handle, address::coreclrAddress + 0x0049D188, &金币指针[1], 8);
-	mem::Read(address::g_handle, 金币指针[1] + 0x48, &金币指针[2], 8);
-	mem::Read(address::g_handle, 金币指针[2] + 0x70, &金币指针[3], 8);
-	mem::Read(address::g_handle, 金币指针[3] + 0x40, &金币指针[4], 8);
-	mem::Read(address::g_handle, 金币指针[4] + 0x15c, &金币指针[5], 8);
-	mem::Read(address::g_handle, 金币指针[5] + 0x18, &金币指针[6], 8);
-	mem::Read(address::g_handle, 金币指针[6] + 0x408, &金币指针[7], 8);
-	mem::Read(address::g_handle, 金币指针[7] + 0xbec, &金币值, 8);
+	mem::Read(address::g_handle, 金币指针[1] + 0xC8, &金币指针[2], 8);
+	mem::Read(address::g_handle, 金币指针[2] + 0x68, &金币指针[3], 8);
+	mem::Read(address::g_handle, 金币指针[3] + 0x90, &金币指针[4], 8);
+	mem::Read(address::g_handle, 金币指针[4] + 0xdc4, &金币指针[5], 8);
+	mem::Read(address::g_handle, 金币指针[5] + 0x10, &金币指针[6], 8);
+	mem::Read(address::g_handle, 金币指针[6] + 0x4d0, &金币指针[7], 8);
+	mem::Read(address::g_handle, 金币指针[7] + 0x33c, &金币值, 8);
 	//std::cout << "金币指针[8] 的地址：" << std::dec << reinterpret_cast<uintptr_t>(金币指针[8]) << std::endl;
 	std::cout << "金币值：" << std::dec<<金币值 << std::endl;
 	std::cout << "请输入金币值：" << std::dec<<金币值 << std::endl;
 	std::cin >> 金币值;
-	
-	mem::Write(金币指针[7] + 0xbec, &金币值, sizeof(金币值));
-
-
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	if (mem::Write(金币指针[7] + 0x33c, &金币值, sizeof(金币值))) {
+		std::cout << "修改成功,2秒后自动关闭  ξ( ✿＞◡❛)"  << std::endl;
+	}
+	else{
+		std::cout << "修改失败！"  << std::endl;
+	}
+	Sleep(2000);
+	return 0;
 
 
 }
