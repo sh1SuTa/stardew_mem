@@ -1,5 +1,2 @@
-﻿  main.cpp
-C:\Users\29030\source\repos\stardew_mem\stardew_mem\main.cpp(70,16): warning C4566: 由通用字符名称“\u273F”表示的字符不能在当前代码页(936)中表示出来
-C:\Users\29030\source\repos\stardew_mem\stardew_mem\main.cpp(70,16): warning C4566: 由通用字符名称“\u25E1”表示的字符不能在当前代码页(936)中表示出来
-C:\Users\29030\source\repos\stardew_mem\stardew_mem\main.cpp(70,16): warning C4566: 由通用字符名称“\u275B”表示的字符不能在当前代码页(936)中表示出来
+﻿  myImgui.cpp
   stardew_mem.vcxproj -> C:\Users\29030\source\repos\stardew_mem\x64\Debug\星露谷修改金币.exe

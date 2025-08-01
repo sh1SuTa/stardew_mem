@@ -5,6 +5,7 @@
 #include <wtypes.h>
 #include"baseAddress/gameAddress.h"
 #include"mem.h"
+#include"myImgui.h"
 HANDLE hConsole;
 void RandomTitle()
 {
@@ -45,11 +46,13 @@ void initGame() {
 }
 
 
-
-int main()
+using namespace myImgui;
+int main(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
 	initGame();
+	
+
+	
 	char* 金币指针[9] = {};
 	int64_t 金币值 = 0;
 	std::cout << "金币值的地址：0x" << std::hex << reinterpret_cast<uintptr_t>(&金币值) << std::endl;
@@ -67,11 +70,31 @@ int main()
 	std::cin >> 金币值;
 	SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	if (mem::Write(金币指针[7] + 0x33c, &金币值, sizeof(金币值))) {
-		std::cout << "修改成功,2秒后自动关闭  ξ( ✿＞◡❛)"  << std::endl;
+		std::cout << "修改成功,2秒后自动关闭  "  << std::endl;
 	}
 	else{
 		std::cout << "修改失败！"  << std::endl;
 	}
+	
+	char* 体力值指针[9] = {};
+	float 体力值 = 0;
+	float a = 400.4;
+	mem::Read(address::g_handle, address::coreclrAddress + 0x49D188, &体力值指针[0], 8);
+	mem::Read(address::g_handle, 体力值指针[0] + 0xC8, &体力值指针[1], 8);
+	mem::Read(address::g_handle, 体力值指针[1] + 0x68, &体力值指针[2], 8);
+	mem::Read(address::g_handle, 体力值指针[2] + 0x90, &体力值指针[3], 8);
+	mem::Read(address::g_handle, 体力值指针[3] + 0xC74, &体力值指针[4], 8);
+	mem::Read(address::g_handle, 体力值指针[4] + 0x10, &体力值指针[5], 8);
+	mem::Read(address::g_handle, 体力值指针[5] + 0x4B8, &体力值指针[6], 8);
+	mem::Read(address::g_handle, 体力值指针[6] + 0x194, &体力值, 4);
+	std::cout << "体力值："  << 体力值 << std::endl;
+	mem::Write(体力值指针[6] + 0x194, &a, sizeof(a));
+
+	char* HP指针[9] = {};
+	int HP值 = 999;
+	mem::Read(address::g_handle, address::coreclrAddress + 0x4A29E8, &HP指针[0], 8);
+	mem::Read(address::g_handle, HP指针[0] + 0x270, &HP指针[1], 8);
+	mem::Write(HP指针[1] + 0xF4C, &HP值, 4);
 	Sleep(2000);
 	return 0;
 
